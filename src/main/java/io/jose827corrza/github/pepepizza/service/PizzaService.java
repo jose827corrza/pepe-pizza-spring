@@ -35,4 +35,26 @@ public class PizzaService {
     public boolean exists(int idPizza) {
         return this.pizzaRepository.existsById(idPizza); // True if  exists
     }
+
+    //  Using query method
+    public List<PizzaEntity> getAvailable() {
+        return this.pizzaRepository.findAllByAvailableTrueOrderByPrice();
+    }
+
+    public PizzaEntity getAvailableAndName(String name) {
+        return this.pizzaRepository.findFirstByAvailableTrueAndNameIgnoreCase(name)
+                .orElseThrow(() -> new RuntimeException("The pizza does not exist"));
+    }
+
+    public List<PizzaEntity> getPizzasWithIngredient(String ingredient) {
+        return this.pizzaRepository.findAllByAvailableTrueAndDescriptionContainingIgnoreCase(ingredient);
+    }
+
+    public List<PizzaEntity> getPizzasWithOutIngredient(String ingredient) {
+        return this.pizzaRepository.findAllByAvailableTrueAndDescriptionNotContainingIgnoreCase(ingredient);
+    }
+
+    public List<PizzaEntity> getTop3CheapestAvailablePizzas(double price) {
+        return this.pizzaRepository.findTop3ByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(price);
+    }
 }

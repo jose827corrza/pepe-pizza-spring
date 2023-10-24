@@ -53,4 +53,30 @@ public class PizzaController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    // Using query methods
+    @GetMapping("/available")
+    public ResponseEntity<List<PizzaEntity>> getAvailable() {
+        return ResponseEntity.ok(this.pizzaService.getAvailable());
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<PizzaEntity> getAvailableAndName(@PathVariable String name) {
+        return ResponseEntity.ok(this.pizzaService.getAvailableAndName(name));
+    }
+
+    @GetMapping("/with/{ingredient}")
+    public ResponseEntity<List<PizzaEntity>> getAvailableAndWithIngredient(@PathVariable String ingredient) {
+        return ResponseEntity.ok(this.pizzaService.getPizzasWithIngredient(ingredient));
+    }
+
+    @GetMapping("/without/{ingredient}")
+    public ResponseEntity<List<PizzaEntity>> getAvailableAndWithOutIngredient(@PathVariable String ingredient) {
+        return ResponseEntity.ok(this.pizzaService.getPizzasWithOutIngredient(ingredient));
+    }
+
+    @GetMapping("/cheapest/{price}")
+    public ResponseEntity<List<PizzaEntity>> getCheapestPizzas(@PathVariable double price) {
+        return ResponseEntity.ok(this.pizzaService.getTop3CheapestAvailablePizzas(price));
+    }
 }
