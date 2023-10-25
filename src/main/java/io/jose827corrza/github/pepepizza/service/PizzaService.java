@@ -1,8 +1,13 @@
 package io.jose827corrza.github.pepepizza.service;
 
 import io.jose827corrza.github.pepepizza.persistence.entity.PizzaEntity;
+import io.jose827corrza.github.pepepizza.persistence.repository.PizzaPageSortRepository;
 import io.jose827corrza.github.pepepizza.persistence.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,14 +15,17 @@ import java.util.List;
 @Service
 public class PizzaService {
     private final PizzaRepository pizzaRepository;
+    private final PizzaPageSortRepository pizzaPagSortRepository;
 
     @Autowired
-    public PizzaService(PizzaRepository pizzaRepository) {
+    public PizzaService(PizzaRepository pizzaRepository, PizzaPageSortRepository pizzaPagSortRepository) {
         this.pizzaRepository = pizzaRepository;
+        this.pizzaPagSortRepository = pizzaPagSortRepository;
     }
 
-    public List<PizzaEntity> getAll() {
-        return this.pizzaRepository.findAll();
+    public Page<PizzaEntity> getAll(int page, int elements) {
+        Pageable pageable = PageRequest.of(page, elements);
+        return this.pizzaPagSortRepository.findAll(pageable);
     }
 
     public PizzaEntity getById(int idPizza) {
@@ -37,8 +45,11 @@ public class PizzaService {
     }
 
     //  Using query method
-    public List<PizzaEntity> getAvailable() {
-        return this.pizzaRepository.findAllByAvailableTrueOrderByPrice();
+    public Page<PizzaEntity> getAvailable(int page, int elements, String sortBy, String sortDirection) {
+
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageable = PageRequest.of(page, elements, sort);
+        return this.pizzaPagSortRepository.findByAvailableTrue(pageable);
     }
 
     public PizzaEntity getAvailableAndName(String name) {
