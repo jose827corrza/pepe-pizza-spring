@@ -39,3 +39,5 @@ out/
 ### Docker Compose ###
 db.env
 postgres_data/
+postgres_data_BAD/
+
