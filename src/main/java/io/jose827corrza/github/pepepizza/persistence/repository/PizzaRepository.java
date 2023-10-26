@@ -1,7 +1,11 @@
 package io.jose827corrza.github.pepepizza.persistence.repository;
 
 import io.jose827corrza.github.pepepizza.persistence.entity.PizzaEntity;
+import io.jose827corrza.github.pepepizza.service.dto.UpdatePizzaPriceDto;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +29,12 @@ public interface PizzaRepository extends ListCrudRepository<PizzaEntity, Integer
     int countByVeganTrue();
 
     List<PizzaEntity> findTop3ByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(double price);
+
+    @Query(value =
+            "UPDATE pizzas " +
+            "SET price = :#{#newPizzaPrice.pizzaPrice} " +
+            "WHERE id_pizza = :#{#newPizzaPrice.pizzaId}",nativeQuery = true)
+    @Modifying // Allow to modify the table
+    void updatePizzaPrice(@Param("newPizzaPrice")UpdatePizzaPriceDto newPizzaPrice); // Spring Special Language
+//    void updatePizzaPrice(@Param("pizzaId") int pizzaId,@Param("pizzaPrice") double pizzaPrice); // Normal way
 }

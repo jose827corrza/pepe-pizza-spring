@@ -3,12 +3,15 @@ package io.jose827corrza.github.pepepizza.service;
 import io.jose827corrza.github.pepepizza.persistence.entity.PizzaEntity;
 import io.jose827corrza.github.pepepizza.persistence.repository.PizzaPageSortRepository;
 import io.jose827corrza.github.pepepizza.persistence.repository.PizzaRepository;
+import io.jose827corrza.github.pepepizza.service.dto.UpdatePizzaPriceDto;
+import io.jose827corrza.github.pepepizza.service.exception.EmailApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -67,5 +70,22 @@ public class PizzaService {
 
     public List<PizzaEntity> getTop3CheapestAvailablePizzas(double price) {
         return this.pizzaRepository.findTop3ByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(price);
+    }
+
+    @Transactional(noRollbackFor = EmailApiException.class) // Will keep the changes even if an Exception was thrown
+    public void updatePizzaPrice(UpdatePizzaPriceDto dto) {
+        /*
+         * is Very important the knowledge of ACID
+         * A Atomicity
+         * C Consistency
+         * I Isolation
+         * D Durability
+         */
+        this.pizzaRepository.updatePizzaPrice(dto);
+        this.sendEmailNotification(); // Without specifying to ignore this, would make a rollback to all the transactions made in this function
+    }
+
+    private void sendEmailNotification() {
+        throw new EmailApiException();
     }
 }
