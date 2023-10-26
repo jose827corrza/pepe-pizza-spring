@@ -1,6 +1,7 @@
 package io.jose827corrza.github.pepepizza.service;
 
 import io.jose827corrza.github.pepepizza.persistence.entity.OrderEntity;
+import io.jose827corrza.github.pepepizza.persistence.projection.OrderSummary;
 import io.jose827corrza.github.pepepizza.persistence.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,9 @@ public class OrderService {
 
     public List<OrderEntity> getOrdersByCustomerId(String idCustomer) {
         return this.orderRepository.getOrdersByCustomerId(idCustomer);
+    }
+
+    public OrderSummary getOrderSummary(int orderId) {
+        return this.orderRepository.findOrderSummary(orderId);
     }
 }

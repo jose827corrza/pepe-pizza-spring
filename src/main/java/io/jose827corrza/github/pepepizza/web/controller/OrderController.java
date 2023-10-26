@@ -1,6 +1,7 @@
 package io.jose827corrza.github.pepepizza.web.controller;
 
 import io.jose827corrza.github.pepepizza.persistence.entity.OrderEntity;
+import io.jose827corrza.github.pepepizza.persistence.projection.OrderSummary;
 import io.jose827corrza.github.pepepizza.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,10 @@ public class OrderController {
     @GetMapping("/customer/{id_customer}")
     public ResponseEntity<List<OrderEntity>> getOrdersByCustomerId(@PathVariable String id_customer) {
         return ResponseEntity.ok(this.orderService.getOrdersByCustomerId(id_customer));
+    }
+
+    @GetMapping("/summary/{orderId}")
+    public ResponseEntity<OrderSummary> getSummary(@PathVariable int orderId) {
+        return ResponseEntity.ok(this.orderService.getOrderSummary(orderId));
     }
 }
