@@ -1,4 +1,4 @@
-package io.jose827corrza.github.pepepizza.persistence.entity;
+package io.jose827corrza.github.pepepizza.persistence.audit;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;

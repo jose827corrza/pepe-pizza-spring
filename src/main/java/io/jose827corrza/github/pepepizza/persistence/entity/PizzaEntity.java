@@ -1,23 +1,22 @@
 package io.jose827corrza.github.pepepizza.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.jose827corrza.github.pepepizza.persistence.audit.AuditPizzaListener;
+import io.jose827corrza.github.pepepizza.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "pizzas")
-@EntityListeners(AuditingEntityListener.class)// Enable auditing for the entity
+@EntityListeners({AuditingEntityListener.class, AuditPizzaListener.class})// Enable auditing for the entity
 @Getter
 @Setter
 @NoArgsConstructor // Avoid using @Data, bad practice to use in entities
-public class PizzaEntity extends AuditableEntity{ // extends ang gets the Column of that class
+public class PizzaEntity extends AuditableEntity implements Serializable { // extends ang gets the Column of that class
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Here we could select uuid instead of a single integer
