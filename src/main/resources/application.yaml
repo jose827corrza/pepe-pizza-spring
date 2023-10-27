@@ -12,5 +12,5 @@ spring:
           non-contextual-creation:true:
     properties:
       hibernate:
-        show_sql:true
+        show-sql:true
 
