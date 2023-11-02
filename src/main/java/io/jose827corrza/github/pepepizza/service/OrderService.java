@@ -4,6 +4,7 @@ import io.jose827corrza.github.pepepizza.persistence.entity.OrderEntity;
 import io.jose827corrza.github.pepepizza.persistence.projection.OrderSummary;
 import io.jose827corrza.github.pepepizza.persistence.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,6 +40,7 @@ public class OrderService {
         return this.orderRepository.findAllByMethodIn(outsideMethods);
     }
 
+    @Secured("ROLE_ADMIN")
     public List<OrderEntity> getOrdersByCustomerId(String idCustomer) {
         return this.orderRepository.getOrdersByCustomerId(idCustomer);
     }
